@@ -1,7 +1,31 @@
 // import Teacher from "../models/TeacherModel.js";
 import Teacher from "../models/TeacherModel.js";
-
+// import TeacherLogin from "../models/TeacherLogin.js";
 // import User from "../models/UserModel.js";
+
+
+
+// export const login = async (req, res, next) => {
+//     const { username, password } = req.body;
+  
+//     try {
+//       const user = await TeacherModelLogin.findOne(username, password);
+//       if (!user) return res.status(401).json({ message: 'Invalid username or password.' });
+//       return res.status(200).json({ message: 'Login successful.' });
+//     } catch (err) {
+//       return next(err);
+//     }
+//   };
+
+
+
+
+
+
+
+
+
+
 
 export const getTeacher= async(req, res) =>{
     try {

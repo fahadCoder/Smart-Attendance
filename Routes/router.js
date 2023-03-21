@@ -4,7 +4,8 @@ import {
     getTeacherById,
     createTeacher,
     updateTeacher,
-    deleteTeacher
+    deleteTeacher,
+    // login
 } from "../Controllers/TeacherController.js";
 
 import {
@@ -47,6 +48,9 @@ router.get('/dashboard/Attendance/:id', getAttendanceById);
 router.post('/dashboard/Attendance', createAttendance);
 router.patch('/dashboard/Attendance/:id', updateAttendance);
 router.delete('/dashboard/Attendance/:id', deleteAttendance);
+
+// Teacher Login
+// router.post('/teacher', login);
 
 
 
