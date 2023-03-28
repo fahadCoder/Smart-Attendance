@@ -5,7 +5,8 @@ import {
     createTeacher,
     updateTeacher,
     deleteTeacher,
-    // login
+    loginTeacher,
+    getTeacherTotal
 } from "../Controllers/TeacherController.js";
 
 import {
@@ -24,7 +25,7 @@ import {
     deleteAttendance
 } from "../Controllers/AttendanceController.js";
 
-
+// import {DashboardTeacher} from "../../SmartAttendance/src/Teacher/DashboardTeacher";
 
 
 const router = express.Router();
@@ -34,6 +35,15 @@ router.get('/dashboard/Teachers/:id', getTeacherById);
 router.post('/dashboard/Teachers', createTeacher);
 router.patch('/dashboard/Teachers/:id', updateTeacher);
 router.delete('/dashboard/Teachers/:id', deleteTeacher);
+
+router.post('/Teacher', loginTeacher);
+// router.get('/TeacherDashboard',getDashboard)
+
+// router.get('/Teacherdashboard', DashboardTeacher);
+
+// Total users for Admin dashboard
+router.get('/dashboard', getTeacherTotal);
+
 
 
 router.get('/dashboard/Timetable', getTimetable);
@@ -52,69 +62,6 @@ router.delete('/dashboard/Attendance/:id', deleteAttendance);
 // Teacher Login
 // router.post('/teacher', login);
 
-
-
-
-
-
 export default router;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // import conn from "../db/conn.js";
-// import conn from "../DB/Conn.js";
-
-
-
-// // Register new Teacher 
-// router.post("/dashboard/Teachers",(req,res)=>{
-//     // console.log(req.body);
-
-//     const { FacultyId,Name,DOB,Email,Password,Gender,Address}=req.body;
-//     if(!FacultyId || !Name || !DOB || !Email || !Password || !Gender || !Address)
-//     {
-//         res.status(422).json("form fields empty");
-//     }
-//     try{
-//         conn.query("SELECT * FROM teacher WHERE email = ?",Email,(err,result)=>{
-//             if(result.length){
-//                 res.status(422).json("this data is already exist");
-//             }else{
-//                 conn.query("INSERT INTO teacher SET ?",{FacultyId,Name,DOB,Email,Password,Gender,Address},(err,result)=>{
-//                     if(err){
-//                         console.log("err"+err);
-//                     }
-//                     else{
-//                         res.status(201).json(req.body);
-//                     }
-//                 })
-//             }
-//         })
-//     }catch(error)
-//     {
-//         res.status(422).json("Error");
-
-//     }
-
-// });
-
-// // module.exports=router;
-// export default router;

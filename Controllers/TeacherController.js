@@ -1,32 +1,73 @@
 // import Teacher from "../models/TeacherModel.js";
 import Teacher from "../models/TeacherModel.js";
-// import TeacherLogin from "../models/TeacherLogin.js";
-// import User from "../models/UserModel.js";
 
 
 
-// export const login = async (req, res, next) => {
-//     const { username, password } = req.body;
-  
+
+export const loginTeacher = async (req, res) => {
+    try {
+
+        const FacultyId=req.body.FacultyID;
+        const Password=req.body.Password;
+
+       const TeacherData= await Teacher.findOne({
+        where:{
+            facultyId:FacultyId,
+            Password:Password
+        }
+
+       });
+       if(TeacherData)
+       {
+        if(Password===TeacherData.Password)
+        {
+            // console.log("login succcessfull");
+            // res.redirect('/Teacherdashboard');
+             // Set user session
+
+            // req.session.user = TeacherData;
+            // res.cookie("FacultyId", TeacherData.facultyId);
+
+            res.status(200).json({ message: "login successful" });
+            // localStorage.setItem('key', FacultyId);
+
+        }
+        else{
+            // res.render('login',{message:"email and password is incorrect"});
+
+            res.status(401).json({ message: "email and password is incorrect" });
+
+        }
+
+       }
+       else{
+        // res.render('login',{message:"email and password is incorrect"});
+        res.status(401).json({ message: "email and password is incorrect" });
+
+       }
+     
+    } catch (error) {
+        console.log(error.message);
+      res.status(401).json({ error: error.message });
+    }
+  };
+
+
+// export const GetLogin = async(req, res) =>{
+//     const FacultyId=req.body.FacultyID;
+//     const Password=req.body.Password;
 //     try {
-//       const user = await TeacherModelLogin.findOne(username, password);
-//       if (!user) return res.status(401).json({ message: 'Invalid username or password.' });
-//       return res.status(200).json({ message: 'Login successful.' });
-//     } catch (err) {
-//       return next(err);
+//         const response = await Teacher.findOne({
+//             where:{
+//                 facultyId:FacultyId,
+//                 Password:Password
+//             }
+//         });
+//         res.status(200).json(response);
+//     } catch (error) {
+//         console.log(error.message);
 //     }
-//   };
-
-
-
-
-
-
-
-
-
-
-
+// }
 export const getTeacher= async(req, res) =>{
     try {
         const response = await Teacher.findAll();
@@ -48,6 +89,25 @@ export const getTeacherById = async(req, res) =>{
         console.log(error.message);
     }
 }
+
+
+// export const getTeacherTotal = async(req, res) =>{
+//     try {
+//         const response = await Teacher.count();
+//         res.status(200).json(response);
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+export const getTeacherTotal = async (req, res) => {
+    try {
+      const total = await Teacher.count();
+      res.status(200).json({ total });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  
 
 export const createTeacher = async(req, res) =>{
     try {
