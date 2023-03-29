@@ -25,10 +25,34 @@ import {
     deleteAttendance
 } from "../Controllers/AttendanceController.js";
 
+import {
+    createAdmin,
+    getTotalAdmin,
+    getAdmins,
+    deleteAdmin,
+   
+} from "../Controllers/AdminController.js";
+
+import {
+    createCoordinator
+   
+} from "../Controllers/CoordinatorController.js";
+
 // import {DashboardTeacher} from "../../SmartAttendance/src/Teacher/DashboardTeacher";
 
 
 const router = express.Router();
+
+
+
+// router.post('/dashboard/team', createCoordinator);
+
+
+
+router.post('/dashboard/team', createAdmin);
+
+
+
 
 router.get('/dashboard/Teachers', getTeacher);
 router.get('/dashboard/Teachers/:id', getTeacherById);
@@ -42,7 +66,12 @@ router.post('/Teacher', loginTeacher);
 // router.get('/Teacherdashboard', DashboardTeacher);
 
 // Total users for Admin dashboard
-router.get('/dashboard', getTeacherTotal);
+// router.get('/dashboard', getTeacherTotal);
+router.get('/dashboard', getTotalAdmin);
+router.get('/dashboard/team', getAdmins);
+router.delete('/dashboard/team/:id', deleteAdmin);
+
+
 
 
 

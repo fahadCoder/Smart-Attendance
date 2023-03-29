@@ -4,12 +4,13 @@ import { Sequelize, DataTypes } from "sequelize";
 
 // const {Datatypes}=Sequelize;
 
-const Teacher=db.define('teacher',{
-    facultyId:DataTypes.STRING,
+const Admin=db.define('Admin',{
+    FacultyID:DataTypes.STRING,
     Name:DataTypes.STRING,
     DOB:DataTypes.DATE,
     Email:DataTypes.STRING,
     Password:DataTypes.STRING,
+    Role:DataTypes.STRING,
     Gender:DataTypes.STRING,
     Address:DataTypes.STRING,
 },{
@@ -18,7 +19,7 @@ const Teacher=db.define('teacher',{
 
 });
 
-export default Teacher;
+export default Admin;
 
 (async()=>{
     await db.sync();
