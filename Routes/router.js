@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
     getTeacher, 
     getTeacherById,
@@ -33,21 +34,30 @@ import {
    
 } from "../Controllers/AdminController.js";
 
-import {
-    createCoordinator
-   
-} from "../Controllers/CoordinatorController.js";
+
+ import {
+    getTimetableData,
+    uploadExcel,
+    getCurrentTimetable,
+ } from "../Controllers/TimetableExcelController.js";
+
+ import multer from 'multer';
+ import session from 'express-session';
 
 // import {DashboardTeacher} from "../../SmartAttendance/src/Teacher/DashboardTeacher";
 
-
+const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
-
+const sessionMiddleware = session({
+    secret: 'mysecret',
+    resave: false,
+    saveUninitialized: false
+  });
 
 // router.post('/dashboard/team', createCoordinator);
 
-
+ 
 
 router.post('/dashboard/team', createAdmin);
 
@@ -77,7 +87,7 @@ router.delete('/dashboard/team/:id', deleteAdmin);
 
 router.get('/dashboard/Timetable', getTimetable);
 router.get('/dashboard/Timetable/:id', getTimetableById);
-router.post('/dashboard/Timetable', createTimetable);
+// router.post('/dashboard/Timetable', createTimetable);
 router.patch('/dashboard/Timetable/:id', updateTimetable);
 router.delete('/dashboard/Timetable/:id', deleteTimetable);
 
@@ -90,6 +100,12 @@ router.delete('/dashboard/Attendance/:id', deleteAttendance);
 
 // Teacher Login
 // router.post('/teacher', login);
+
+
+router.post('/dashboard/Timetable',upload.single('timetable'), uploadExcel);
+router.get('/Teacherdashboard/TimetableTeacher', getTimetableData);
+router.get('/Teacherdashboard',sessionMiddleware, getCurrentTimetable);
+
 
 export default router;
 

@@ -1,11 +1,12 @@
 // import Teacher from "../models/TeacherModel.js";
 import Timetable from "../models/TimetableModel.js";
+import Excel from "../models/ExcelModel.js";
 
 // import User from "../models/UserModel.js";
 
 export const getTimetable= async(req, res) =>{
     try {
-        const response = await Timetable.findAll();
+        const response = await Excel.findAll();
         res.status(200).json(response);
     } catch (error) {
         console.log(error.message);
@@ -59,3 +60,4 @@ export const deleteTimetable = async(req, res) =>{
         console.log(error.message);
     }
 }
+// -------------------------import timetable excel file API

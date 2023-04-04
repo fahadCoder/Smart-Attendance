@@ -8,19 +8,32 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // app.use(UserRoute);
-app.use(TeacherRoute);
 app.use(cookieParser());
 
-app.use(session({
+// app.use(session({
+//     secret: process.env.SESSION_SECRET || 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       secure: false,
+//       httpOnly: false,
+//       maxAge: 3600000, // 1 hour
+//     },
+//   }));
+  const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
       secure: false,
-      httpOnly: true,
+      httpOnly: false,
       maxAge: 3600000, // 1 hour
     },
-  }));
+  });
+  // app.use(sessionMiddleware);
+  
+  app.use(sessionMiddleware,TeacherRoute);
+
 
 app.listen(5000, ()=> console.log('Server up and running...5000'));
 
