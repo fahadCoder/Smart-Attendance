@@ -1,95 +1,39 @@
 // import Teacher from "../models/TeacherModel.js";
 import Teacher from "../models/TeacherModel.js";
 
-
-
-
-// export const loginTeacher = async (req, res) => {
-//     try {
-
-//         const FacultyId=req.body.FacultyID;
-//         const Password=req.body.Password;
-
-//        const TeacherData= await Teacher.findOne({
-//         where:{
-//             facultyId:FacultyId,
-//             Password:Password
-//         }
-
-//        });
-//        if(TeacherData)
-//        {
-//         if(Password===TeacherData.Password)
-//         {
-//             // console.log("login succcessfull");
-//             // res.redirect('/Teacherdashboard');
-//              // Set user session
-
-//             // req.session.user = TeacherData;
-//             // res.cookie("FacultyId", TeacherData.facultyId);
-
-//             res.status(200).json({ message: "login successful" });
-//             // localStorage.setItem('key', FacultyId);
-
-//         }
-//         else{
-//             // res.render('login',{message:"email and password is incorrect"});
-
-//             res.status(401).json({ message: "email and password is incorrect" });
-
-//         }
-
-//        }
-//        else{
-//         // res.render('login',{message:"email and password is incorrect"});
-//         res.status(401).json({ message: "email and password is incorrect" });
-
-//        }
-     
-//     } catch (error) {
-//         console.log(error.message);
-//       res.status(401).json({ error: error.message });
-//     }
-//   };
-
-
-
 export const loginTeacher = async (req, res) => {
-    try {
-      const facultyId = req.body.FacultyID;
-      const password = req.body.Password;
-  
-      const teacherData = await Teacher.findOne({
-        where: {
-          facultyId: facultyId,
-          Password: password
-        }
-      });
-  
-      if (teacherData) {
-        if (password === teacherData.Password) {
-          req.session.facultyId = teacherData.facultyId; // create session with facultyId
-          req.session.save();
-          console.log("teacher ID is : ",req.session.facultyId);
-          res.status(200).json({ message: "login successful", facultyId: teacherData.facultyId });
-        } else {
-          res.status(401).json({ message: "email and password is incorrect" });
-        }
+  try {
+    const facultyId = req.body.FacultyID;
+    const password = req.body.Password;
+
+    const teacherData = await Teacher.findOne({
+      where: {
+        facultyId: facultyId,
+        Password: password
+      }
+    });
+
+    if (teacherData) {
+      if (password === teacherData.Password) {
+        let a=3;
+        req.session.facultyid = a; // create session with facultyId
+        req.session.save();
+        console.log("teacher ID is : ",req.session.facultyid);
+        res.status(200).json({ message: "login successful", facultyId: teacherData.facultyId });
+        // localStorage.setItem("FacultyId",re/q.session.facultyid);
+        // console.log("local storage ", localStorage.getItem("FacultyId"));
+
       } else {
         res.status(401).json({ message: "email and password is incorrect" });
       }
-    } catch (error) {
-      console.log(error.message);
-      res.status(401).json({ error: error.message });
+    } else {
+      res.status(401).json({ message: "email and password is incorrect" });
     }
-  };
-  
-  // in your app.js file, initialize session middleware before your routes
-//   app.use(session({
-//     secret: 'your_secret_key_here',
-//     resave: false,
-//     saveUninitialized: false,
-//   }));
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).json({ error: error.message });
+  }
+};
 
 
 
@@ -138,50 +82,6 @@ export const createTeacher = async(req, res) =>{
     }
 }
 
-// export const updateTeacher = async(req, res) =>{
-//     try {
-//         await Teacher.update(req.body,{
-//             where:{
-//                 id: req.params.id
-//             } 
-//         });
-//         res.status(200).json({msg: "User Updated"});
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-
-
-
-
-
-// export const updateTeacher =  async (req, res) => {
-//     try {
-//       const updatedTeacher = await Teacher.update(
-//         {
-//           // update the fields you want to change
-//           name: req.body.name,
-//           email: req.body.email,
-//           phone: req.body.phone,
-//           //...
-//         },
-//         {
-//           where: {
-//             id: req.params.id, // find the teacher by id
-//           },
-//         }
-//       );
-//       if (updatedTeacher[0] === 0) {
-//         // if the teacher with that id does not exist
-//         res.status(404).json({ msg: 'Teacher not found' });
-//       } else {
-//         res.status(200).json({ msg: 'Teacher updated successfully' });
-//       }
-//     } catch (error) {
-//       console.log(error.message);
-//       res.status(500).json({ msg: 'Server error' });
-//     }
-//   };
 
 export const deleteTeacher = async(req, res) =>{
     try {

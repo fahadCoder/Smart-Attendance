@@ -12,6 +12,9 @@ const Teacher=db.define('teacher',{
     Password:DataTypes.STRING,
     Gender:DataTypes.STRING,
     Address:DataTypes.STRING,
+    Country:DataTypes.STRING,
+    Experience:DataTypes.INTEGER,
+
 },{
     freezeTableName:true,
     timestamps: false, // this option disables createdAt and updatedAt fields

@@ -14,7 +14,7 @@ export const getAttendanceById = async(req, res) =>{
     try {
         const response = await Attendance.findOne({
             where:{
-                id: req.params.id
+                facultyId: req.params.id
             }
         });
         res.status(200).json(response);
@@ -23,14 +23,6 @@ export const getAttendanceById = async(req, res) =>{
     }
 }
 
-// export const createAttendance = async(req, res) =>{
-//     try {
-//         await Attendance.create(req.body);
-//         res.status(201).json({msg: "User Created"});
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
 // ------------------------------------------mark attendance by checking teacher register or not
 export const createAttendance = async (req, res) => {
     const { facultyId } = req.body;
@@ -68,24 +60,6 @@ export const createAttendance = async (req, res) => {
 
 
 
-// export const createAttendance = async (req, res) => {
-//     const { teacher_faculty_id, course_id, date, present } = req.body;
-//     const teacherQuery = `SELECT id FROM Teacher WHERE faculty_id = ${teacher_faculty_id}`;
-//     try {
-//       const [teacherRows] = await pool.query(teacherQuery);
-//       if (teacherRows.length === 0) {
-//         res.status(404).json({ msg: 'Teacher not found' });
-//       } else {
-//         const teacher_id = teacherRows[0].id;
-//         const attendanceQuery = `INSERT INTO Attendance (teacher_id, course_id, date, present) VALUES (${teacher_id}, ${course_id}, '${date}', ${present})`;
-//         await pool.query(attendanceQuery);
-//         res.status(201).json({ msg: 'Attendance record created' });
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ msg: 'Server error' });
-//     }
-//   };
   
 
 

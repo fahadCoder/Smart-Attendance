@@ -1,9 +1,10 @@
 import Admin from "../models/AdminModel.js";
 import Teacher from "../models/TeacherModel.js";
 
+import express from 'express';
+import session from 'express-session';
 
-
-
+ 
 export const createAdmin = async(req, res) =>{
     try {
         await Admin.create(req.body);
@@ -13,20 +14,52 @@ export const createAdmin = async(req, res) =>{
     }
 }
 
-// export const getTotalAdmin = async (req, res) => {
-//     try {
-//       const total = await Admin.count({
-//        where: {
-//             Role: "Admin"
-//         }
-//       });
-//       res.status(200).json({ total });
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   }
+
+
+export const AdminLogin = async (req, res) => {
+  try {
+    const facultyId = req.body.FacultyID;
+    const password = req.body.Password;
+    // const facultyId = "A45";
+    // const password = "raheel123";
+
+    const Details = await Admin.findOne({
+      where: {
+        facultyId: facultyId,
+        Password: password,
+
+      }
+    });
+
+    if (Details) {
+      if (password === Details.Password) {
+        req.session.facultyid = Details.FacultyID; // create session with FacultyID
+        const userId = req.session.facultyid; // Access us
+         console.log("session id in gettotal admin : ",userId);
+        // req.session.save();
+      // console.log("ajdncwd.l");
+        // console.log("teacher ID is : ",req.session.facultyid);
+        // res.status(200).json({ message: "login successful", facultyId: Details.facultyId });
+        res.status(200).json({ message: "login successful"});
+
+        // localStorage.setItem("FacultyId",re/q.session.facultyid);
+        // console.log("local storage ", localStorage.getItem("FacultyId"));
+
+      } else {
+        res.status(401).json({ message: "email and password is incorrect" });
+      }
+    } else {
+      res.status(401).json({ message: "email and password is incorrect" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).json({ error: error.message });
+  }
+};
 
 export const getTotalAdmin = async (req, res) => {
+  // const userId = req.session.facultyid; // Access us
+  // console.log("session id in gettotal admin : ",userId);
     try {
       const adminCount = await Admin.count({
         where: { Role: 'Admin' }
@@ -49,6 +82,7 @@ export const getTotalAdmin = async (req, res) => {
       console.log(error.message);
       res.status(500).json({ error: 'Server error' });
     }
+    
   };
 
   export const getAdmins= async(req, res) =>{

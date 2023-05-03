@@ -31,6 +31,7 @@ import {
     getTotalAdmin,
     getAdmins,
     deleteAdmin,
+    AdminLogin,
    
 } from "../Controllers/AdminController.js";
 
@@ -49,15 +50,18 @@ import {
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
-const sessionMiddleware = session({
-    secret: 'mysecret',
-    resave: false,
-    saveUninitialized: false
-  });
+// const router2= express.
+
+// const sessionMiddleware = session({
+//     secret: 'mysecret',
+//     resave: false,
+//     saveUninitialized: false
+//   });
 
 // router.post('/dashboard/team', createCoordinator);
 
- 
+router.post('/Teacher', loginTeacher);
+
 
 router.post('/dashboard/team', createAdmin);
 
@@ -70,20 +74,16 @@ router.post('/dashboard/Teachers', createTeacher);
 router.patch('/dashboard/Teachers/:id', updateTeacher);
 router.delete('/dashboard/Teachers/:id', deleteTeacher);
 
-router.post('/Teacher', loginTeacher);
-// router.get('/TeacherDashboard',getDashboard)
 
-// router.get('/Teacherdashboard', DashboardTeacher);
 
-// Total users for Admin dashboard
-// router.get('/dashboard', getTeacherTotal);
 router.get('/dashboard', getTotalAdmin);
 router.get('/dashboard/team', getAdmins);
 router.delete('/dashboard/team/:id', deleteAdmin);
+router.post('/',AdminLogin);
 
 
 
-
+ 
 
 router.get('/dashboard/Timetable', getTimetable);
 router.get('/dashboard/Timetable/:id', getTimetableById);
@@ -93,20 +93,51 @@ router.delete('/dashboard/Timetable/:id', deleteTimetable);
 
 
 router.get('/dashboard/Attendance', getAttendance);
-router.get('/dashboard/Attendance/:id', getAttendanceById);
+// router.get('/dashboard/Attendance/:id', getAttendanceById);
 router.post('/dashboard/Attendance', createAttendance);
 router.patch('/dashboard/Attendance/:id', updateAttendance);
 router.delete('/dashboard/Attendance/:id', deleteAttendance);
-
+ 
 // Teacher Login
 // router.post('/teacher', login);
 
 
 router.post('/dashboard/Timetable',upload.single('timetable'), uploadExcel);
 router.get('/Teacherdashboard/TimetableTeacher', getTimetableData);
-router.get('/Teacherdashboard',sessionMiddleware, getCurrentTimetable);
+router.get('/Teacherdashboard', getCurrentTimetable);
+
+router.get('/Teacherdashboard/TeacherAttendance/:id', getAttendanceById);
+
+getTimetableData
 
 
 export default router;
 
 
+
+
+// import express from "express";
+// import {
+  
+//     getCurrentTimetable,
+//  } from "../Controllers/TimetableExcelController.js";
+// import {
+    
+//     loginTeacher,
+    
+// } from "../Controllers/TeacherController.js";
+
+//  const router = express.Router();
+
+// router.post('/Teacher', loginTeacher);
+
+// // Use getCurrentTimetable function only for authenticated users
+// router.get('/Teacherdashboard', (req, res, next) => {
+//   if (req.session.facultyid) {
+//     next();
+//   } else {
+//     res.status(401).json({ message: "Unauthorized" });
+//   }
+// }, getCurrentTimetable);
+
+// export default router;
