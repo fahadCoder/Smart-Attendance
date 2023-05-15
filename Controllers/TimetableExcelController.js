@@ -83,7 +83,7 @@ export const uploadExcel = async (req, res) => {
   
   export const getTimetableData = async (req, res) => {
     try {
-     let facultyId=1015;
+     let facultyId=13121;
       const currentDate = new Date();
       const currentDay = currentDate.getDay(); // get current day of the week (0-6, where 0 is Sunday)
       const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // get current time in HH:mm format
@@ -113,7 +113,7 @@ export const uploadExcel = async (req, res) => {
 
 export const getCurrentTimetable = async (req, res) => {
   try {
-    let facultyId=1015;
+    let facultyId=13121;
     const today = new Date();
     const dayOfWeek = today.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const currentTime = moment().format('hh:mm A');

@@ -1,5 +1,6 @@
 import express from "express";
-
+// const wifi = require('node-wifi');
+import wifi from 'node-wifi';
 import {
     getTeacher, 
     getTeacherById,
@@ -7,7 +8,10 @@ import {
     updateTeacher,
     deleteTeacher,
     loginTeacher,
-    getTeacherTotal
+    getTeacherTotal,
+    GetResponseFromModel,
+    MarkAttendance,
+    OneTimePassword,
 } from "../Controllers/TeacherController.js";
 
 import {
@@ -32,6 +36,8 @@ import {
     getAdmins,
     deleteAdmin,
     AdminLogin,
+    GetPermissions,
+    CollectDataset
    
 } from "../Controllers/AdminController.js";
 
@@ -50,17 +56,31 @@ import {
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
-// const router2= express.
+// for live attendance mark 
+const storage = multer.memoryStorage();
+const upload2 = multer({ storage: storage });
 
-// const sessionMiddleware = session({
-//     secret: 'mysecret',
-//     resave: false,
-//     saveUninitialized: false
-//   });
+export const CheckLoginAccess = async (req, res, next) => {
+    // Check if user is connected to university WIFI
+    try {
+      await wifi.init({ iface: null }); // initialize the wifi module
+      const currentConnections = await wifi.getCurrentConnections(); // get a list of currently connected WiFi networks
+      const isUniversityWifi = currentConnections.some(connection => connection.ssid === 'FIRST FLOOR'); // check if any of the currently connected WiFi networks have the correct SSID
+      if (isUniversityWifi) {
+        // User is connected to university WIFI, allow login
+        next();
+      } else {
+        // User is not connected to university WIFI, deny login
+        res.status(401).json({ message: 'Unauthorized: You must be connected to the university WIFI to log in' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 
-// router.post('/dashboard/team', createCoordinator);
 
-router.post('/Teacher', loginTeacher);
+router.post('/Teacher',CheckLoginAccess, loginTeacher);
 
 
 router.post('/dashboard/team', createAdmin);
@@ -80,6 +100,10 @@ router.get('/dashboard', getTotalAdmin);
 router.get('/dashboard/team', getAdmins);
 router.delete('/dashboard/team/:id', deleteAdmin);
 router.post('/',AdminLogin);
+router.post('/dashboard', CollectDataset);
+
+
+// router.get('/dashboard', GetPermissions);
 
 
 
@@ -106,38 +130,15 @@ router.post('/dashboard/Timetable',upload.single('timetable'), uploadExcel);
 router.get('/Teacherdashboard/TimetableTeacher', getTimetableData);
 router.get('/Teacherdashboard', getCurrentTimetable);
 
-router.get('/Teacherdashboard/TeacherAttendance/:id', getAttendanceById);
+// router.post('/Teacherdashboard', MarkAttendance);
+router.post('/Teacherdashboard', upload2.single('image'),GetResponseFromModel);
 
-getTimetableData
+router.get('/Teacherdashboard/TeacherAttendance/:id', getAttendanceById);
+router.post('/OneTimePassword', OneTimePassword);
+
 
 
 export default router;
 
 
 
-
-// import express from "express";
-// import {
-  
-//     getCurrentTimetable,
-//  } from "../Controllers/TimetableExcelController.js";
-// import {
-    
-//     loginTeacher,
-    
-// } from "../Controllers/TeacherController.js";
-
-//  const router = express.Router();
-
-// router.post('/Teacher', loginTeacher);
-
-// // Use getCurrentTimetable function only for authenticated users
-// router.get('/Teacherdashboard', (req, res, next) => {
-//   if (req.session.facultyid) {
-//     next();
-//   } else {
-//     res.status(401).json({ message: "Unauthorized" });
-//   }
-// }, getCurrentTimetable);
-
-// export default router;

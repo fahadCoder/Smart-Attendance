@@ -1,5 +1,8 @@
 import Admin from "../models/AdminModel.js";
 import Teacher from "../models/TeacherModel.js";
+import Permissions from "../models/Permission.js";
+import fs from "fs";
+import NodeWebcam from "node-webcam";
 
 import express from 'express';
 import session from 'express-session';
@@ -105,4 +108,57 @@ export const deleteAdmin = async(req, res) =>{
     } catch (error) {
         console.log(error.message);
     }
+}
+
+export const GetPermissions= async(req, res) =>{
+  try {
+      const response = await Permissions.findOne({
+        where:{
+          facultyId: 'CO12'
+      }
+      });
+      console.log(response);
+      res.status(200).json(response);
+  } catch (error) {
+      console.log(error.message);
+  }
+}
+
+
+export const CollectDataset= async (req, res) => {
+  try {
+    const folderName = req.body.folderName;
+     // Check if the folder already exists
+     if (fs.existsSync(folderName)) {
+      return res.status(400).json({ message: "Folder already exists" });
+    }
+    else
+    {
+   // Create a folder in the machine directory
+    fs.mkdirSync(folderName);
+    }
+ 
+
+    // Use node-webcam to capture 20 pictures with a 2-second delay
+    const Webcam = NodeWebcam.create({});
+
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const timestamp = new Date().getTime();
+        const fileName = `${folderName}/image_${timestamp}.jpg`;
+        Webcam.capture(fileName, (err, data) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(`Image ${i + 1} captured`);
+          }
+        });
+      }, i * 2000);
+    }
+
+    res.json({ message: "Folder created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to create folder" });
+  }
 }

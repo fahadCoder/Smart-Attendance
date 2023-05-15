@@ -10,6 +10,7 @@ const Teacher=db.define('teacher',{
     DOB:DataTypes.DATE,
     Email:DataTypes.STRING,
     Password:DataTypes.STRING,
+    UpdatePassword:DataTypes.INTEGER,
     Gender:DataTypes.STRING,
     Address:DataTypes.STRING,
     Country:DataTypes.STRING,
