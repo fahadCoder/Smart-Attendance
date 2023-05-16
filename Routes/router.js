@@ -37,7 +37,8 @@ import {
     deleteAdmin,
     AdminLogin,
     GetPermissions,
-    CollectDataset
+    CollectDataset,
+    // MakeFolder
    
 } from "../Controllers/AdminController.js";
 
@@ -65,7 +66,7 @@ export const CheckLoginAccess = async (req, res, next) => {
     try {
       await wifi.init({ iface: null }); // initialize the wifi module
       const currentConnections = await wifi.getCurrentConnections(); // get a list of currently connected WiFi networks
-      const isUniversityWifi = currentConnections.some(connection => connection.ssid === 'FIRST FLOOR'); // check if any of the currently connected WiFi networks have the correct SSID
+      const isUniversityWifi = currentConnections.some(connection => connection.ssid === 'Riphah-S'); // check if any of the currently connected WiFi networks have the correct SSID
       if (isUniversityWifi) {
         // User is connected to university WIFI, allow login
         next();
@@ -101,9 +102,10 @@ router.get('/dashboard/team', getAdmins);
 router.delete('/dashboard/team/:id', deleteAdmin);
 router.post('/',AdminLogin);
 router.post('/dashboard', CollectDataset);
+// router.post('/dashboard', MakeFolder);
 
 
-// router.get('/dashboard', GetPermissions);
+router.get('/dashboard', GetPermissions);
 
 
 
